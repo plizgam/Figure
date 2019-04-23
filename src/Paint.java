@@ -1,84 +1,69 @@
 import Figures.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
-public class Paint extends JFrame implements MouseListener, KeyListener {
-    ArrayList<Object> figures = new ArrayList<Object>();
-    int rand;
+public class Paint extends JFrame {
+    ArrayList<Figure> figures = new ArrayList<Figure>();
 
-    public Paint(){
+    public Paint() {
         setTitle("Moduł rysowania");
         setSize(1200, 800);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-        addMouseListener(this);
+
+        makeFigures();
     }
 
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
+
         super.paint(g);
-        getContentPane().setBackground(Color.BLACK);
-        for(Object o : figures){
 
+        for (int i = 0; i < figures.size(); i++) {
+            figures.get(i).paint(g, (figures.get(i).x/100)*getWidth(), (figures.get(i).y/100)*getHeight() );
         }
     }
 
-    @Override
-    public void mousePressed(MouseEvent a) {
+    public void makeFigures() {
 
-        rand = (int)(Math.random()*3);
+        Thread th = new Thread(() ->{
+            for(int i = 0; i < 100; i++) {
+                switch ((int) (Math.random() * 2)) {
+                    case 0:
+                        figures.add(new Rect((int) (Math.random() * 100), (int) (Math.random() * 100)));
+                        break;
 
-        switch(rand){
-            case 0:
-               figures.add(new Rect(a.getX(), a.getY()));
-               break;
-            case 1:
-                figures.add(new Triangle(a.getX(), a.getY()));
-        }
+                    case 1:
+                        figures.add(new Triangle((int) (Math.random() * 100), (int) (Math.random() * 100)));
+                        break;
 
-
-        super.repaint();
-    }
-
-
-    @Override
-    public void keyPressed(KeyEvent keyEvent) {
-        if(keyEvent.toString().equals("c"))
-            ;
-    }
+                    case 2:
+                        figures.add(new Oval((int) (Math.random() * 100), (int) (Math.random() * 100)));
+                        break;
+                }
 
 
-    @Override
-    public void mouseClicked(MouseEvent mouseEvent) {
+                TimerTask timer = new TimerTask(){
+                    @Override
+                    public void run() {
+                        repaint();
+                    }
+                };
 
-    }
+                timer.run();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                timer.cancel();
 
-    @Override
-    public void mouseReleased(MouseEvent mouseEvent) {
+            }
+        });
 
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent mouseEvent) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void keyTyped(KeyEvent keyEvent) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent keyEvent) {
+        th.start();
 
     }
 }
