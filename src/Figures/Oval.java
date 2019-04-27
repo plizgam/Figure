@@ -4,15 +4,12 @@ import java.awt.*;
 
 public class Oval extends Figure {
 
-    int r;
-
-    public Oval(int x, int y){
-        super(x, y);
-        r = (int)(Math.random()*x);
+    public Oval(int x, int y, int parA){
+        super(x, y, parA, 0);
     }
 
-    public void paint(Graphics g, int x, int y){
+    public void paint(Graphics g, int x, int y, int width, int height) {
         g.setColor(this.color);
-        g.fillOval(x, y, r,r);
+        g.fillOval(x, y, (super.parA*((width+height)/2)/100), (super.parA*((width+height)/2)/100));
     }
 }

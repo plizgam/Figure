@@ -3,16 +3,13 @@ package Figures;
 import java.awt.*;
 
 public class Rect extends Figure {
-    int sideA, sideB;
 
-    public Rect(int x, int y){
-        super(x, y);
-        sideA = (int)(Math.random()*x);
-        sideB = (int)(Math.random()*y);
+    public Rect(int x, int y, int parA){
+        super(x, y, parA, 0);
     }
 
-    public void paint(Graphics g, int x, int y){
+    public void paint(Graphics g, int x, int y, int width, int height){
         g.setColor(this.color);
-        g.fillRect(x, y, sideA, sideB);
+        g.fillRect(x, y, (super.parA*((width+height)/2)/100), (super.parA*((width+height)/2)/100));
     }
 }
