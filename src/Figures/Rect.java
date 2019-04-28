@@ -4,9 +4,8 @@ import java.awt.*;
 
 public class Rect extends Figure {
 
-    public Rect(int x, int y, int parA){
-        super(x, y, parA, 0);
-    }
+    public Rect(int x, int y, int parA, Color color){ super(x, y, parA, 0, color); }
+
 
     public void paint(Graphics g, int x, int y, int width, int height){
         g.setColor(this.color);
