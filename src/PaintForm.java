@@ -49,7 +49,6 @@ public class PaintForm extends JFrame {
         Buttons.clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
                 if(figures.size() != 0) {
                     FileManager.saveFigures(figures);
                     figures.clear();
@@ -89,7 +88,7 @@ public class PaintForm extends JFrame {
         Thread th = new Thread(() ->{
 
 
-            for(int i = 0; i < 2; i++) {
+            for(int i = 0; i < 20000; i++) {
 
                 do{
                     xDim = (int)(Math.random() * 100);
@@ -102,7 +101,7 @@ public class PaintForm extends JFrame {
                 while(!((xDim*getWidth())/100 > frameValue &&
                         (yDim*getHeight())/100 > frameValue+40 &&
                         (xDim*getWidth())/100 < getWidth()-1.5*frameValue &&
-                        (yDim*getHeight())/100 < getHeight()-1.5*frameValue &&
+                        (yDim*getHeight())/100 < getHeight()-1.5*frameValue-20 &&
                         yDim != 0 && xDim != 0 && parameterA != 0 && parameterB != 0));
 
               Color color = new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
@@ -144,4 +143,3 @@ public class PaintForm extends JFrame {
 
     }
 }
-
