@@ -36,8 +36,8 @@ public class FileManager {
                             figures.get(i).parA);
                     break;
 
-                case("Figures.Rect"):
-                    sb.append("Rect\tRGB:" + color + "x:" +
+                case("Figures.Square"):
+                    sb.append("Square\tRGB:" + color + "x:" +
                             figures.get(i).x + "\ty:" +
                             figures.get(i).y + "\tparA:" +
                             figures.get(i).parA);
@@ -115,8 +115,8 @@ public class FileManager {
                 Color color = new Color(Integer.parseInt(RGB[0]), Integer.parseInt(RGB[1]), Integer.parseInt(RGB[2]));
 
 
-                if(typeOfFigure.contains("Rect"))
-                    figures.add(new Rect(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(parameterA), color));
+                if(typeOfFigure.contains("Square"))
+                    figures.add(new Square(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(parameterA), color));
                 else
                 if(typeOfFigure.contains("Oval"))
                     figures.add(new Oval(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(parameterA), color));

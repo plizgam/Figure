@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class PaintForm extends JFrame {
-    int xDim, yDim, parameterA, parameterB, frameValue;
+    int xDim, yDim, parameterA, parameterB, frameValue, figureCount = 100;
 
     ArrayList<Figure> figures = new ArrayList<Figure>();
 
@@ -21,18 +21,20 @@ public class PaintForm extends JFrame {
         setVisible(true);
         getContentPane().setBackground(Color.WHITE);
 
+
+
+        makeFigures();
         ButtonsPanel Buttons = new ButtonsPanel();
         Buttons.setVisible(false);
         add(Buttons);
-
-        makeFigures();
-
 
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 repaint();
+
+
               if(Buttons.isVisible()){
                   Buttons.setVisible(false);
                   getContentPane().setBackground(Color.WHITE);
@@ -42,7 +44,13 @@ public class PaintForm extends JFrame {
 
                 Buttons.requestFocusInWindow();
 
+                if(figures.size() == figureCount){
+                    int theBiggestFigure = 0;
+                    for(int i = 0; i < figures.size(); i++){
+                        if(figures.get(i).parA > theBiggestFigure && figures.get(i).getClass().getName().contains("Square"))
 
+                    }
+                }
             }
         });
 
@@ -88,7 +96,7 @@ public class PaintForm extends JFrame {
         Thread th = new Thread(() ->{
 
 
-            for(int i = 0; i < 20000; i++) {
+            for(int i = 0; i < figureCount; i++) {
 
                 do{
                     xDim = (int)(Math.random() * 100);
@@ -108,7 +116,7 @@ public class PaintForm extends JFrame {
 
                 switch ((int) (Math.random() * 3)) {
                     case 0:
-                        figures.add(new Rect(xDim, yDim, parameterA, color));
+                        figures.add(new Square(xDim, yDim, parameterA, color));
                         break;
 
                     case 1:
@@ -129,7 +137,7 @@ public class PaintForm extends JFrame {
 
                 timer.run();
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
