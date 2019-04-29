@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class PaintForm extends JFrame {
-    int xDim, yDim, parameterA, parameterB, frameValue, figureCount = 100;
+    int xDim, yDim, parameterA, parameterB, frameValue;
+    boolean figureMaker = true;
+    ButtonsPanel Buttons;
 
     ArrayList<Figure> figures = new ArrayList<Figure>();
 
     public PaintForm() {
-        setTitle("Projekt GUI");
+        setTitle("Projekt GUI - GENEROWANIE");
         setSize(1200, 800);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -24,7 +26,7 @@ public class PaintForm extends JFrame {
 
 
         makeFigures();
-        ButtonsPanel Buttons = new ButtonsPanel();
+        Buttons = new ButtonsPanel();
         Buttons.setVisible(false);
         add(Buttons);
 
@@ -40,17 +42,12 @@ public class PaintForm extends JFrame {
                   getContentPane().setBackground(Color.WHITE);
               }else{
                   Buttons.setVisible(true);
+                  Buttons.loadButton.setLocation(100,100);
               }
 
                 Buttons.requestFocusInWindow();
 
-                if(figures.size() == figureCount){
-                    int theBiggestFigure = 0;
-                    for(int i = 0; i < figures.size(); i++){
-                        if(figures.get(i).parA > theBiggestFigure && figures.get(i).getClass().getName().contains("Square"))
 
-                    }
-                }
             }
         });
 
@@ -58,9 +55,11 @@ public class PaintForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(figures.size() != 0) {
+                    figureMaker = false;
                     FileManager.saveFigures(figures);
                     figures.clear();
                     repaint();
+                    setTitle("Projekt GUI - WYCZYSZCZONE");
                 }
             }
         });
@@ -72,6 +71,26 @@ public class PaintForm extends JFrame {
                 if(figures.size() == 0) {
                     figures = FileManager.loadFigures(figures);
                     repaint();
+                    setTitle("Projekt GUI - ODCZYTANE Z PLIKU");
+                }
+            }
+        });
+
+        Buttons.stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                figureMaker = false;
+                setTitle("Projekt GUI - ZATRZYMANIE");
+            }
+        });
+
+        Buttons.startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(!getTitle().contains("GENEROWANIE")) {
+                    figureMaker = true;
+                    makeFigures();
+                    setTitle("Projekt GUI - GENEROWANIE");
                 }
             }
         });
@@ -87,6 +106,7 @@ public class PaintForm extends JFrame {
             figures.get(i).paint(g, ((figures.get(i).x)* getWidth())/100, ((figures.get(i).y)* getHeight())/100, getWidth(), getHeight());
 
         }
+
     }
 
 
@@ -96,7 +116,7 @@ public class PaintForm extends JFrame {
         Thread th = new Thread(() ->{
 
 
-            for(int i = 0; i < figureCount; i++) {
+            while(figureMaker) {
 
                 do{
                     xDim = (int)(Math.random() * 100);
@@ -137,12 +157,11 @@ public class PaintForm extends JFrame {
 
                 timer.run();
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 timer.cancel();
-
             }
         });
 
